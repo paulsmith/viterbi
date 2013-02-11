@@ -1,5 +1,7 @@
 package viterbi
 
+import "fmt"
+
 type State string
 type Observation string
 
@@ -70,4 +72,20 @@ func (v Viterbi) FindPath() ViterbiPath {
 		}
 	}
 	return ViterbiPath{maxPr, path[state]}
+}
+
+func printDebugTable(V []map[State]float64) {
+	fmt.Printf("    ")
+	for i := 0; i < len(V); i++ {
+		fmt.Printf("%7d ", i)
+	}
+	fmt.Println("")
+
+	for y, _ := range V[0] {
+		fmt.Printf("%.5s:  ", y)
+		for t := 0; t < len(V); t++ {
+			fmt.Printf("%.5f ", V[t][y])
+		}
+		fmt.Println("")
+	}
 }
