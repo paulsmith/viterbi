@@ -33,11 +33,11 @@ func (v Viterbi) FindPath() ViterbiPath {
 		maxPr, pr     float64
 	)
 
+	V = append(V, make(map[State]float64))
 	path = make(map[State][]State)
 
 	for _, y = range v.States {
-		pr := v.StartPr[y] * v.EmitPr[EmitKey{y, v.Obs[0]}]
-		V = append(V, map[State]float64{y: pr})
+		V[0][y] = v.StartPr[y] * v.EmitPr[EmitKey{y, v.Obs[0]}]
 		path[y] = append(path[y], y)
 	}
 
@@ -46,6 +46,7 @@ func (v Viterbi) FindPath() ViterbiPath {
 		newpath = make(map[State][]State)
 
 		for _, y = range v.States {
+			maxPr = 0.0
 			for _, y0 := range v.States {
 				pr = V[t-1][y0] * v.TransPr[TransKey{y0, y}] * v.EmitPr[EmitKey{y, v.Obs[t]}]
 				if pr > maxPr {
